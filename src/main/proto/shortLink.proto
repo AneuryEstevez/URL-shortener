@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package shortlinkGrpc;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+message User {
+  string name = 1;
+}
+
+message ShortLink {
+  string id = 1;
+  string url = 2;
+  string shortened_url = 3;
+  string date = 4;
+  repeated ShortLinkVisitor visitor_list = 5;
+  int32 visits = 6;
+  User user = 7;
+}
+
+message ShortLinkVisitor {
+  string id = 1;
+  string browser = 2;
+  string operative_system = 3;
+  string ip_address = 4;
+  string time = 5;
+}
+
+message ShortLinkList {
+  repeated ShortLink shortlink = 1;
+}
+
+message ShortLinkResponse {
+  string url = 1;
+  string shortenedUrl = 2;
+  string date = 3;
+}
+
+service ShortLinkService {
+  rpc listShortLinks(User) returns (ShortLinkList);
+  rpc createShortLink(ShortLinkRequest) returns (ShortLinkResponse);
+}
+
+message ShortLinkRequest {
+  string url = 1;
+}
+
